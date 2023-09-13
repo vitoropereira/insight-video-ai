@@ -11,7 +11,7 @@ model Video {
   id            String   @id @default(uuid())
   name          String
   path          String
-  trasncription String?
+  transcription String?
   createdAt     DateTime @default(now())
 }
 
