@@ -18,7 +18,9 @@ export const env = createEnv({
     DATABASE_URL: z.string().min(1),
     OPENAI_KEY: z.string().min(1),
   },
-  client: {},
+  client: {
+    NEXT_PUBLIC_VERCEL_URL: z.string().min(1),
+  },
   shared: {
     NODE_ENV: nodeEnv,
     VERCEL_ENV: z
@@ -30,5 +32,6 @@ export const env = createEnv({
     NODE_ENV: process.env.NODE_ENV,
     VERCEL_ENV: process.env.VERCEL_ENV,
     OPENAI_KEY: process.env.OPENAI_KEY,
+    NEXT_PUBLIC_VERCEL_URL: process.env.NEXT_PUBLIC_VERCEL_URL,
   },
 });
