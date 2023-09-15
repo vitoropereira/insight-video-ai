@@ -30,6 +30,6 @@ POST http://localhost:3000/api/ai/generate
 
 {
 "videoId":"b1b9f776-ff84-42be-820b-bb16ee4f8a0f",
-"template":"Gere um resumo sussinto da transcrição gerada a seguir: '''{trasncription.}'''",
+"prommpt":"Gere um resumo sussinto da transcrição gerada a seguir: '''{trasncription.}'''",
 "temperature" :0.8
 }

@@ -3,15 +3,16 @@ import { createReadStream } from "node:fs";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { openai } from "@/lib/openai";
+import { StreamingTextResponse, OpenAIStream } from "ai";
 
 const bodySchema = z.object({
   videoId: z.string(),
-  template: z.string(),
+  prompt: z.string(),
   temperature: z.number().min(0).max(1).default(0.5),
 });
 
 export async function POST(request: NextRequest) {
-  const { videoId, template, temperature } = bodySchema.parse(
+  const { videoId, prompt, temperature } = bodySchema.parse(
     await request.json()
   );
 
@@ -28,10 +29,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const promptMessage = template.replace(
-    "{transcription}",
-    video.transcription
-  );
+  const promptMessage = prompt.replace("{transcription}", video.transcription);
 
   const response = await openai.chat.completions.create({
     model: "gpt-3.5-turbo-16k",
@@ -42,7 +40,10 @@ export async function POST(request: NextRequest) {
         content: promptMessage,
       },
     ],
+    stream: true,
   });
 
-  return NextResponse.json({ response });
+  const stream = OpenAIStream(response);
+
+  return new StreamingTextResponse(stream);
 }
